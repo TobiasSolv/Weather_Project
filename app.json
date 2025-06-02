@@ -7,11 +7,14 @@
     "icon": "./assets/images/icon.png",
     "scheme": "wheaterproject",
     "userInterfaceStyle": "automatic",
+    "scheme": "com.tobso.login",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.tobso.login"
     },
     "android": {
+      "package": "com.tobso.login",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -37,6 +40,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "529dfc69-033c-4000-b982-44b9553d7d26"
+      }
     }
   }
 }

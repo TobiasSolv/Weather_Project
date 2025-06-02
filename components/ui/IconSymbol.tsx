@@ -19,6 +19,7 @@ const MAPPING = {
   'map': 'map',
   'sun.max': 'wb-sunny',
   'magnifyingglass': 'search',
+  'person.fill': 'login',
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
 } as IconMapping;

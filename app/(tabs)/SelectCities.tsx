@@ -25,7 +25,7 @@ export default function WeatherApp() {
             // === sammenligner også´typen
 
 
-            // sende det til git hub
+
 
             setEuCapitals(prevCapitals =>
               prevCapitals.map((capital, i) =>

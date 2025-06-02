@@ -6,7 +6,9 @@ const SharedStateContext = createContext<any>(null);
 
 
 export const SharedStateProvider = ({ children }: { children: React.ReactNode }) => {
-  const [euCapitals, setEuCapitals] = useState(EuropeanCapitals);
+  const [euCapitals, setEuCapitals] = useState(EuropeanCapitals.map((capital, index) => {
+      return {...capital, index}
+      }))
   const [weatherData, setWeatherData] = useState([]);
 
   return (

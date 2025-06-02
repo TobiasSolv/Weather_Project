@@ -3,6 +3,7 @@ import { Text, View, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity, 
 import { EuropeanCapitals } from '../Capitals';
 import { useSharedState } from '../SharedState';
 import { formatWindSpeed, formatTemperature, getWeatherEmoji} from '../WeatherHelpers';
+import { PanGestureHandler, GestureHandlerRootView} from 'react-native-gesture-handler'
 
 export default function WeatherApp() {
   const [loading, setLoading] = useState(true);
@@ -28,6 +29,7 @@ export default function WeatherApp() {
         }
 
         return {
+          euCapitalsIndex: capital.index,
           country: capital.country,
           capital: capital.capital,
           temperature: data.main.temp,
@@ -52,9 +54,9 @@ export default function WeatherApp() {
       setLoading(true);
       try {
           // computed property
-        const sampleCapitals = euCapitals.filter(capital => capital.display);
+        const selectedCapitals = euCapitals.filter(capital => capital.display);
 
-        const weatherPromises = sampleCapitals.map(capital =>
+        const weatherPromises = selectedCapitals.map(capital =>
           fetchWeatherForCapital(capital)
         );
 
@@ -72,9 +74,21 @@ export default function WeatherApp() {
     // weather app subscriber på dependencies
   }, [euCapitals]);
 
+  function onGestureEvent(event, index){
+      const{translationX, translationY} = event.nativeEvent
+      let deleteIndex = weatherData[index].euCapitalsIndex
+
+      setEuCapitals(prevCapitals =>
+                    prevCapitals.map((capital, i) =>
+                      i === deleteIndex
+                        ? { ...capital, display: false }
+                        : capital
+                    )
+                  );
+      }
 
   // Render a single weather item
-  const renderWeatherItem = ({ item }) => {
+  const renderWeatherItem = ({ item, index }) => {
     if (item.error) {
       return (
         <View style={styles.weatherItem}>
@@ -84,7 +98,9 @@ export default function WeatherApp() {
       );
     }
 
+    // index her er weatherData index
     return (
+    <PanGestureHandler onGestureEvent={(event) => onGestureEvent(event, index)}>
       <View style={styles.weatherItem}>
         <View style={styles.header}>
           <Text style={styles.capitalName}>{item.capital}, {item.country}</Text>
@@ -95,6 +111,7 @@ export default function WeatherApp() {
         <Text>Humidity: {item.humidity}%</Text>
         <Text>Wind: {formatWindSpeed(item.windSpeed, isMetric)}</Text>
       </View>
+    </PanGestureHandler>
     );
   };
 
@@ -118,30 +135,31 @@ export default function WeatherApp() {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Weather in European Capitals</Text>
+    <GestureHandlerRootView>
+        <View style={styles.container}>
+          <Text style={styles.title}>Weather in European Capitals</Text>
 
-      {/* Unit Toggle - Metric vs Imperial */}
-      <View style={styles.unitToggle}>
-        <Text style={styles.unitLabel}>°C</Text>
-        <Switch
-          value={!isMetric}
-          onValueChange={() => setIsMetric(!isMetric)}
-          thumbColor={isMetric ? "#f4f3f4" : "#007AFF"}
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
-        />
-        <Text style={styles.unitLabel}>°F</Text>
-      </View>
+          {/* Unit Toggle - Metric vs Imperial */}
+          <View style={styles.unitToggle}>
+            <Text style={styles.unitLabel}>°C</Text>
+            <Switch
+              value={!isMetric}
+              onValueChange={() => setIsMetric(!isMetric)}
+              thumbColor={isMetric ? "#f4f3f4" : "#007AFF"}
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+            />
+            <Text style={styles.unitLabel}>°F</Text>
+          </View>
 
-      <Text style={styles.subtitle}>Showing data for {weatherData.length} of {EuropeanCapitals.length} capitals</Text>
-
-      <FlatList
-        data={weatherData}
-        renderItem={renderWeatherItem}
-        keyExtractor={(item) => item.capital}
-        style={styles.list}
-      />
-    </View>
+          <Text style={styles.subtitle}>Showing data for {weatherData.length} of {EuropeanCapitals.length} capitals</Text>
+              <FlatList
+                data={weatherData}
+                renderItem={renderWeatherItem}
+                keyExtractor={(item) => item.capital}
+                style={styles.list}
+              />
+        </View>
+    </GestureHandlerRootView>
   );
 }
 

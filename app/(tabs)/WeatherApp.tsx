@@ -13,7 +13,7 @@ export default function WeatherApp() {
 
 
 
-  const API_KEY = '2f47cc0e4801dcde25d10f28bc331fba';
+  const API_KEY = '2f47cc0e4801dcde25d10f28bc331fba'; // deaktiveret
 
     // en hook, som syncronisere komponenten med resten af react, startknap
   useEffect(() => {

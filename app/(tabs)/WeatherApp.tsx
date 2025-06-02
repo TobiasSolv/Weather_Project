@@ -3,7 +3,8 @@ import { Text, View, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity, 
 import { EuropeanCapitals } from '../Capitals';
 import { useSharedState } from '../SharedState';
 import { formatWindSpeed, formatTemperature, getWeatherEmoji} from '../WeatherHelpers';
-import { PanGestureHandler, GestureHandlerRootView} from 'react-native-gesture-handler'
+import { PanGestureHandler, GestureHandlerRootView} from 'react-native-gesture-handler';
+import { API_KEY } from '../APIKEY';
 
 export default function WeatherApp() {
   const [loading, setLoading] = useState(true);
@@ -13,7 +14,7 @@ export default function WeatherApp() {
 
 
 
-  const API_KEY = '2f47cc0e4801dcde25d10f28bc331fba'; // deaktiveret
+  //const API_KEY = '2f47cc0e4801dcde25d10f28bc331fba'; // deaktiveret
 
     // en hook, som syncronisere komponenten med resten af react, startknap
   useEffect(() => {

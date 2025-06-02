@@ -1,33 +1,49 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity, Switch } from 'react-native';
-import { EuropeanCapitals } from '../Capitals';
 import Checkbox from 'expo-checkbox';
 import { useSharedState } from '../SharedState';
 
 
 export default function WeatherApp() {
-    const { sharedValue, setSharedValue } = useSharedState();
-
-
-
-  useEffect(() => {
-
-  }, []);
-
+    //useSharedState bliver aktiveret i app/_layout.tsx
+    const { euCapitals, setEuCapitals } = useSharedState();
 
   // Render a single weather item
-    const renderSelectItem = ({ item }) => {
+    const renderSelectItem = ({ item, index }) => {
+        const handleCheckboxChange = (newValue) => {
+            // euCapitals[index].display = newValue;
+
+            // setEuCapitals(prevCapitals => prevCapitals)
+            // setEuCapitals(prevCapitals => prevCapitals.map((capital, i) => capital))
+            // setEuCapitals(prevCapitals => prevCapitals.map((capital, i) => {
+            //      if (i === index) {
+            //          return { ...capital, display: newValue };
+            //      } else {
+            //          return capital;
+            //      }
+            // }))
+            // === sammenligner også´typen
+
+
+            // sende det til git hub
+
+            setEuCapitals(prevCapitals =>
+              prevCapitals.map((capital, i) =>
+                i === index
+                  ? { ...capital, display: newValue }
+                  : capital
+              )
+            );
+          };
 
       return (
         <View style={styles.weatherItem}>
           <View style={styles.header}>
             <Checkbox
-                      value={sharedValue}
-                      onValueChange={setSharedValue}
-
+                      value={item.display}
+                      onValueChange={handleCheckboxChange}
                     />
-
-            <Text style={styles.capitalName}>{item.capital}, {item.country}</Text>
+            <Text style={styles.capitalName}> {item.capital}, {item.country}</Text>
           </View>
 
         </View>
@@ -40,7 +56,7 @@ export default function WeatherApp() {
       <Text style={styles.title}>Select cities</Text>
 
       <FlatList
-        data={EuropeanCapitals}
+        data={euCapitals}
         renderItem={renderSelectItem}
         keyExtractor={(item) => item.capital}
         style={styles.list}

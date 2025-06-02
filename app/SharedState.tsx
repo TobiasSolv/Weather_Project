@@ -1,13 +1,16 @@
 // context/SharedStateContext.tsx
 import React, { createContext, useContext, useState } from 'react';
+import { EuropeanCapitals } from './Capitals';
 
 const SharedStateContext = createContext<any>(null);
 
+
 export const SharedStateProvider = ({ children }: { children: React.ReactNode }) => {
-  const [sharedValue, setSharedValue] = useState(false);
+  const [euCapitals, setEuCapitals] = useState(EuropeanCapitals);
+  const [weatherData, setWeatherData] = useState([]);
 
   return (
-    <SharedStateContext.Provider value={{ sharedValue, setSharedValue }}>
+    <SharedStateContext.Provider value={{ euCapitals, setEuCapitals, weatherData, setWeatherData }}>
       {children}
     </SharedStateContext.Provider>
   );
